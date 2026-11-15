@@ -11,8 +11,10 @@
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Google Fonts (日系質感字體) -->
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;400;500;700;900&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- Google Fonts (加入 Zen Maru Gothic 與 Noto Serif TC) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;400;500;700;900&family=Zen+Maru+Gothic:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     
     <script>
         tailwind.config = {
@@ -27,7 +29,8 @@
                         line: '#E5E3DB'      // 柔和的格線色
                     },
                     fontFamily: {
-                        sans: ['"Noto Sans TC"', 'sans-serif'],
+                        // 將預設無襯線字體替換為溫潤的 Zen Maru Gothic
+                        sans: ['"Zen Maru Gothic"', 'sans-serif'],
                         serif: ['"Noto Serif TC"', 'serif'],
                     }
                 }
@@ -110,7 +113,7 @@
                 <button onclick="switchPage('page-home')" class="font-serif font-bold text-xl tracking-widest text-ink hover:text-matcha transition-colors">
                     宜起出去玩
                 </button>
-                <div class="flex gap-4 md:gap-8 text-sm md:text-base tracking-widest">
+                <div class="flex gap-4 md:gap-8 text-sm md:text-base tracking-widest font-bold">
                     <button onclick="switchPage('page-day1')" class="nav-link py-5" data-target="page-day1">Day 1</button>
                     <button onclick="switchPage('page-day2')" class="nav-link py-5" data-target="page-day2">Day 2</button>
                     <button onclick="switchPage('page-day3')" class="nav-link py-5" data-target="page-day3">Day 3</button>
@@ -141,7 +144,7 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-0 border border-line bg-white shadow-sm mb-12">
                         <div class="p-8 border-b md:border-b-0 md:border-r border-line">
                             <span class="text-sm text-muted tracking-widest border border-line px-3 py-1 mb-4 inline-block font-bold">STAY / 住宿</span>
-                            <h4 class="text-2xl font-serif mb-3 text-ink font-bold">簡單就好民宿</h4>
+                            <h4 class="text-2xl font-bold mb-3 text-ink">簡單就好民宿</h4>
                             <p class="text-base text-muted font-medium mb-6 tracking-wide">宜蘭縣冬山鄉群英村九分三路38號</p>
                             <div class="flex flex-col gap-3">
                                 <a href="https://www.google.com/maps/search/?api=1&query=宜蘭縣冬山鄉群英村九分三路38號" target="_blank" class="text-sm border border-line text-ink hover:bg-ink hover:text-white px-4 py-3 transition-colors tracking-wider font-bold text-center"><i class="fa-brands fa-google mr-2"></i>Google 地圖</a>
@@ -163,21 +166,21 @@
                                 <div class="bg-white border border-line p-5">
                                     <div class="flex justify-between items-center mb-3 border-b border-line pb-3">
                                         <span class="font-bold text-lg text-ink">司機：黃暐翔</span>
-                                        <span class="text-sm text-muted font-mono bg-washi px-2 py-1 font-bold">BUH-1913</span>
+                                        <span class="text-sm text-muted font-bold bg-washi px-2 py-1 tracking-wider">BUH-1913</span>
                                     </div>
                                     <p class="text-base text-ink font-medium leading-relaxed">乘客：黃品翰、小陳、黃姿螢、黃品慧</p>
                                 </div>
                                 <div class="bg-white border border-line p-5">
                                     <div class="flex justify-between items-center mb-3 border-b border-line pb-3">
                                         <span class="font-bold text-lg text-ink">司機：黃信迪</span>
-                                        <span class="text-sm text-muted font-mono bg-washi px-2 py-1 font-bold">BSD-6230</span>
+                                        <span class="text-sm text-muted font-bold bg-washi px-2 py-1 tracking-wider">BSD-6230</span>
                                     </div>
                                     <p class="text-base text-ink font-medium leading-relaxed">乘客：阿迪一家</p>
                                 </div>
                                 <div class="bg-white border border-line p-5">
                                     <div class="flex justify-between items-center mb-3 border-b border-line pb-3">
                                         <span class="font-bold text-lg text-ink">司機：黃信銘</span>
-                                        <span class="text-sm text-muted font-mono bg-washi px-2 py-1 font-bold text-matcha">6418-UX</span>
+                                        <span class="text-sm text-matcha font-bold bg-washi px-2 py-1 tracking-wider">6418-UX</span>
                                     </div>
                                     <p class="text-base text-muted font-medium leading-relaxed">乘客：無</p>
                                 </div>
@@ -188,19 +191,19 @@
                     <!-- 行程入口導航區塊 -->
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <button onclick="switchPage('page-day1')" class="border border-line bg-white p-8 text-center hover:border-ink hover:shadow-md transition-all group">
-                            <h3 class="text-2xl font-serif font-bold text-ink mb-2">第一日</h3>
+                            <h3 class="text-2xl font-bold text-ink mb-2">第一日</h3>
                             <p class="text-matcha tracking-widest font-bold mb-4">12.04</p>
-                            <span class="text-sm text-ink border-b border-ink pb-1 group-hover:px-4 transition-all">進入行程 <i class="fa-solid fa-arrow-right ml-1"></i></span>
+                            <span class="text-sm text-ink border-b border-ink pb-1 group-hover:px-4 transition-all font-bold">進入行程 <i class="fa-solid fa-arrow-right ml-1"></i></span>
                         </button>
                         <button onclick="switchPage('page-day2')" class="border border-line bg-white p-8 text-center hover:border-ink hover:shadow-md transition-all group">
-                            <h3 class="text-2xl font-serif font-bold text-ink mb-2">第二日</h3>
+                            <h3 class="text-2xl font-bold text-ink mb-2">第二日</h3>
                             <p class="text-wood tracking-widest font-bold mb-4">12.05</p>
-                            <span class="text-sm text-ink border-b border-ink pb-1 group-hover:px-4 transition-all">進入行程 <i class="fa-solid fa-arrow-right ml-1"></i></span>
+                            <span class="text-sm text-ink border-b border-ink pb-1 group-hover:px-4 transition-all font-bold">進入行程 <i class="fa-solid fa-arrow-right ml-1"></i></span>
                         </button>
                         <button onclick="switchPage('page-day3')" class="border border-line bg-white p-8 text-center hover:border-ink hover:shadow-md transition-all group">
-                            <h3 class="text-2xl font-serif font-bold text-ink mb-2">第三日</h3>
+                            <h3 class="text-2xl font-bold text-ink mb-2">第三日</h3>
                             <p class="text-muted tracking-widest font-bold mb-4">12.06</p>
-                            <span class="text-sm text-ink border-b border-ink pb-1 group-hover:px-4 transition-all">進入行程 <i class="fa-solid fa-arrow-right ml-1"></i></span>
+                            <span class="text-sm text-ink border-b border-ink pb-1 group-hover:px-4 transition-all font-bold">進入行程 <i class="fa-solid fa-arrow-right ml-1"></i></span>
                         </button>
                     </div>
                 </div>
@@ -221,7 +224,7 @@
                         <div class="timeline-dot"></div>
                         <div class="flex flex-col md:flex-row md:items-start gap-4">
                             <div class="md:w-36 flex-shrink-0">
-                                <span class="text-ink font-serif text-2xl font-bold tracking-wider">11:00</span>
+                                <span class="text-ink text-2xl font-bold tracking-wider">11:00</span>
                                 <span class="text-base text-muted block mt-1 font-medium">~ 12:15</span>
                             </div>
                             <div class="flex-grow">
@@ -239,7 +242,7 @@
                         <div class="timeline-dot"></div>
                         <div class="flex flex-col md:flex-row md:items-start gap-4">
                             <div class="md:w-36 flex-shrink-0">
-                                <span class="text-ink font-serif text-2xl font-bold tracking-wider">13:50</span>
+                                <span class="text-ink text-2xl font-bold tracking-wider">13:50</span>
                                 <span class="text-base text-muted block mt-1 font-medium">~ 15:00</span>
                             </div>
                             <div class="flex-grow">
@@ -257,7 +260,7 @@
                         <div class="timeline-dot"></div>
                         <div class="flex flex-col md:flex-row md:items-start gap-4">
                             <div class="md:w-36 flex-shrink-0">
-                                <span class="text-ink font-serif text-2xl font-bold tracking-wider">15:30</span>
+                                <span class="text-ink text-2xl font-bold tracking-wider">15:30</span>
                                 <span class="text-base text-muted block mt-1 font-medium">~ 16:20</span>
                             </div>
                             <div class="flex-grow">
@@ -275,7 +278,7 @@
                         <div class="timeline-dot"></div>
                         <div class="flex flex-col md:flex-row md:items-start gap-4">
                             <div class="md:w-36 flex-shrink-0">
-                                <span class="text-ink font-serif text-2xl font-bold tracking-wider">16:50</span>
+                                <span class="text-ink text-2xl font-bold tracking-wider">16:50</span>
                                 <span class="text-base text-muted block mt-1 font-medium">~ 22:00</span>
                             </div>
                             <div class="flex-grow">
@@ -324,12 +327,59 @@
                         <div class="timeline-dot bg-wood"></div>
                         <div class="flex flex-col md:flex-row md:items-start gap-4">
                             <div class="md:w-36 flex-shrink-0">
-                                <span class="text-ink font-serif text-2xl font-bold tracking-wider">09:50</span>
+                                <span class="text-ink text-2xl font-bold tracking-wider">08:00</span>
+                                <span class="text-base text-muted block mt-1 font-medium">~ 08:40</span>
+                            </div>
+                            <div class="flex-grow">
+                                <h4 class="text-2xl font-bold tracking-wide mb-3 text-ink">早晨時光</h4>
+                                <p class="text-lg text-ink font-medium leading-relaxed mb-5">起床梳洗，準備迎接新的一天。</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="relative pl-16 py-6 border-b border-line border-dashed">
+                        <div class="timeline-dot bg-wood"></div>
+                        <div class="flex flex-col md:flex-row md:items-start gap-4">
+                            <div class="md:w-36 flex-shrink-0">
+                                <span class="text-ink text-2xl font-bold tracking-wider">09:00</span>
+                                <span class="text-base text-muted block mt-1 font-medium">~ 09:40</span>
+                            </div>
+                            <div class="flex-grow">
+                                <h4 class="text-2xl font-bold tracking-wide mb-3 text-ink">早餐：成富食品行</h4>
+                                <p class="text-lg text-ink font-medium leading-relaxed mb-5">享用在地早餐。預計 09:40 出發前往斑比山丘。</p>
+                                
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div class="border border-line bg-white p-5">
+                                        <p class="font-bold text-xl mb-2 text-ink">成富食品行</p>
+                                        <p class="text-sm text-muted mb-4 font-medium">宜蘭縣冬山鄉香和村冬山路15號</p>
+                                        <div class="flex flex-col gap-2">
+                                            <a href="https://www.google.com/maps/search/?api=1&query=宜蘭縣冬山鄉香和村冬山路15號" target="_blank" class="text-sm border border-line py-2 text-center hover:bg-ink hover:text-white transition font-bold">Google Maps</a>
+                                            <a href="http://maps.apple.com/?q=宜蘭縣冬山鄉香和村冬山路15號" target="_blank" class="text-sm border border-line py-2 text-center hover:bg-ink hover:text-white transition font-bold">Apple Maps</a>
+                                        </div>
+                                    </div>
+                                    <div class="border border-line bg-white p-5">
+                                        <p class="font-bold text-xl mb-2 text-ink">全聯停車場 (冬山香和店)</p>
+                                        <p class="text-sm text-muted mb-4 font-medium">宜蘭縣冬山鄉香和村香和路3巷7號</p>
+                                        <div class="flex flex-col gap-2">
+                                            <a href="https://www.google.com/maps/search/?api=1&query=宜蘭縣冬山鄉香和村香和路3巷7號" target="_blank" class="text-sm border border-line py-2 text-center hover:bg-ink hover:text-white transition font-bold">Google Maps</a>
+                                            <a href="http://maps.apple.com/?q=宜蘭縣冬山鄉香和村香和路3巷7號" target="_blank" class="text-sm border border-line py-2 text-center hover:bg-ink hover:text-white transition font-bold">Apple Maps</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="relative pl-16 py-6 border-b border-line border-dashed">
+                        <div class="timeline-dot bg-wood"></div>
+                        <div class="flex flex-col md:flex-row md:items-start gap-4">
+                            <div class="md:w-36 flex-shrink-0">
+                                <span class="text-ink text-2xl font-bold tracking-wider">09:50</span>
                                 <span class="text-base text-muted block mt-1 font-medium">~ 11:00</span>
                             </div>
                             <div class="flex-grow">
                                 <h4 class="text-2xl font-bold tracking-wide mb-3 text-ink">斑比山丘</h4>
-                                <p class="text-lg text-ink font-medium leading-relaxed mb-5">09:30 準時出發，享受與梅花鹿的近距離接觸，悠閒的晨間散策。</p>
+                                <p class="text-lg text-ink font-medium leading-relaxed mb-5">享受與梅花鹿的近距離接觸，悠閒的晨間散策。</p>
                                 <div class="flex flex-col sm:flex-row gap-3">
                                     <a href="https://www.google.com/maps/search/?api=1&query=宜蘭縣冬山鄉下湖路285號" target="_blank" class="text-sm border border-line px-5 py-3 text-ink bg-white hover:bg-ink hover:text-white transition-colors tracking-wider font-bold text-center"><i class="fa-brands fa-google mr-2"></i>斑比山丘 Google</a>
                                     <a href="http://maps.apple.com/?q=宜蘭縣冬山鄉下湖路285號" target="_blank" class="text-sm border border-line px-5 py-3 text-ink bg-white hover:bg-ink hover:text-white transition-colors tracking-wider font-bold text-center"><i class="fa-brands fa-apple mr-2"></i>斑比山丘 Apple</a>
@@ -342,7 +392,7 @@
                         <div class="timeline-dot bg-wood"></div>
                         <div class="flex flex-col md:flex-row md:items-start gap-4">
                             <div class="md:w-36 flex-shrink-0">
-                                <span class="text-ink font-serif text-2xl font-bold tracking-wider">11:30</span>
+                                <span class="text-ink text-2xl font-bold tracking-wider">11:30</span>
                                 <span class="text-base text-muted block mt-1 font-medium">~ 13:00</span>
                             </div>
                             <div class="flex-grow">
@@ -373,7 +423,7 @@
                         <div class="timeline-dot bg-wood"></div>
                         <div class="flex flex-col md:flex-row md:items-start gap-4">
                             <div class="md:w-36 flex-shrink-0">
-                                <span class="text-ink font-serif text-2xl font-bold tracking-wider">13:30</span>
+                                <span class="text-ink text-2xl font-bold tracking-wider">13:30</span>
                                 <span class="text-base text-muted block mt-1 font-medium">~ 16:30</span>
                             </div>
                             <div class="flex-grow">
@@ -391,7 +441,7 @@
                         <div class="timeline-dot bg-wood"></div>
                         <div class="flex flex-col md:flex-row md:items-start gap-4">
                             <div class="md:w-36 flex-shrink-0">
-                                <span class="text-ink font-serif text-2xl font-bold tracking-wider">17:00</span>
+                                <span class="text-ink text-2xl font-bold tracking-wider">17:00</span>
                                 <span class="text-base text-muted block mt-1 font-medium">~ 22:00</span>
                             </div>
                             <div class="flex-grow">
@@ -423,7 +473,7 @@
                         <div class="timeline-dot bg-muted"></div>
                         <div class="flex flex-col md:flex-row md:items-start gap-4">
                             <div class="md:w-36 flex-shrink-0">
-                                <span class="text-ink font-serif text-2xl font-bold tracking-wider">09:00</span>
+                                <span class="text-ink text-2xl font-bold tracking-wider">09:00</span>
                                 <span class="text-base text-muted block mt-1 font-medium">~ 10:00</span>
                             </div>
                             <div class="flex-grow">
@@ -437,15 +487,16 @@
                         <div class="timeline-dot bg-muted"></div>
                         <div class="flex flex-col md:flex-row md:items-start gap-4">
                             <div class="md:w-36 flex-shrink-0">
-                                <span class="text-ink font-serif text-2xl font-bold tracking-wider">12:30</span>
+                                <span class="text-ink text-2xl font-bold tracking-wider">12:30</span>
+                                <span class="text-base text-muted block mt-1 font-medium">~ 14:30</span>
                             </div>
                             <div class="flex-grow">
-                                <h4 class="text-2xl font-bold tracking-wide mb-3 text-ink">涮金鍋和風涮涮鍋</h4>
-                                <p class="text-lg text-ink font-medium leading-relaxed mb-5">抵達桃園中壢青埔店，以溫暖的鍋物作為旅程的結尾。</p>
+                                <h4 class="text-2xl font-bold tracking-wide mb-3 text-ink">橫山水一方</h4>
+                                <p class="text-lg text-ink font-medium leading-relaxed mb-5">抵達桃園大園區，以美味的午餐作為旅程的結尾。</p>
                                 
                                 <div class="flex flex-col sm:flex-row gap-3">
-                                    <a href="https://www.google.com/maps/search/?api=1&query=桃園市中壢區芝芭里高鐵南路二段335號" target="_blank" class="text-sm border border-line px-5 py-3 text-ink bg-white hover:bg-ink hover:text-white transition-colors tracking-wider font-bold text-center"><i class="fa-brands fa-google mr-2"></i>涮金鍋 Google</a>
-                                    <a href="http://maps.apple.com/?q=桃園市中壢區芝芭里高鐵南路二段335號" target="_blank" class="text-sm border border-line px-5 py-3 text-ink bg-white hover:bg-ink hover:text-white transition-colors tracking-wider font-bold text-center"><i class="fa-brands fa-apple mr-2"></i>涮金鍋 Apple</a>
+                                    <a href="https://www.google.com/maps/search/?api=1&query=桃園市大園區青峰里大仁路102號E棟1樓" target="_blank" class="text-sm border border-line px-5 py-3 text-ink bg-white hover:bg-ink hover:text-white transition-colors tracking-wider font-bold text-center"><i class="fa-brands fa-google mr-2"></i>餐廳 Google</a>
+                                    <a href="http://maps.apple.com/?q=桃園市大園區青峰里大仁路102號E棟1樓" target="_blank" class="text-sm border border-line px-5 py-3 text-ink bg-white hover:bg-ink hover:text-white transition-colors tracking-wider font-bold text-center"><i class="fa-brands fa-apple mr-2"></i>餐廳 Apple</a>
                                 </div>
                             </div>
                         </div>
@@ -455,7 +506,7 @@
                         <div class="timeline-dot bg-line !border-none"></div>
                         <div class="flex flex-col md:flex-row md:items-start gap-4">
                             <div class="md:w-36 flex-shrink-0">
-                                <span class="text-muted font-serif text-2xl font-bold tracking-wider">14:30</span>
+                                <span class="text-muted text-2xl font-bold tracking-wider">14:30</span>
                             </div>
                             <div class="flex-grow">
                                 <h4 class="text-2xl font-bold tracking-wide mb-3 text-muted">歸途</h4>

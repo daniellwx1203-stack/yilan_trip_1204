@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>宜起出去玩 - 現代和風冬季之旅</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts (日系質感字體) -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;400;500;700;900&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        washi: '#F9F8F4',    // 和紙白 (背景)
+                        ink: '#2A2A2A',      // 墨黑 (主文字)
+                        muted: '#666666',    // 淺灰 (次要文字)
+                        matcha: '#82916A',   // 抹茶綠 (主強調色)
+                        wood: '#C1B098',     // 木質棕 (次強調色)
+                        line: '#E5E3DB'      // 柔和的格線色
+                    },
+                    fontFamily: {
+                        sans: ['"Noto Sans TC"', 'sans-serif'],
+                        serif: ['"Noto Serif TC"', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body { background-color: #F9F8F4; overflow-x: hidden; color: #2A2A2A; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #C1B098; border-radius: 4px; }
+        
+        /* 初始轉場特效 */
+        #splash-screen { transition: opacity 0.8s ease-in-out, transform 0.8s ease; }
+        .hide-splash { opacity: 0; pointer-events: none; transform: translateY(-10px); }
+        #app-container { opacity: 0; transition: opacity 1s ease-in-out; display: none; }
+        .show-app { opacity: 1 !important; }
+
+        /* 分頁切換特效 */
+        .page-view { display: none; animation: fadeIn 0.5s ease-in-out; }
+        .page-active { display: block; }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 日系細線時間軸設計 */
+        .timeline-line { position: relative; }
+        .timeline-line::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 24px;
+            width: 1px;
+            background: #E5E3DB;
+            z-index: 0;
+        }
+        .timeline-dot {
+            position: absolute;
+            left: 20px;
+            top: 32px;
+            width: 9px;
+            height: 9px;
+            background: #82916A;
+            transform: rotate(45deg);
+            z-index: 10;
+        }
+
+        /* 導航列狀態 */
+        .nav-link.active { border-bottom: 2px solid #2A2A2A; color: #2A2A2A; font-weight: 700; }
+        .nav-link { color: #666666; font-weight: 500; transition: all 0.3s; }
+        .nav-link:hover { color: #2A2A2A; }
+    </style>
+</head>
+<body class="font-sans antialiased relative selection:bg-matcha selection:text-white text-base">
+
+    <!-- 1. 初始啟動頁面 (Splash Screen) -->
+    <div id="splash-screen" class="fixed inset-0 z-50 flex items-center justify-center bg-washi">
+        <div class="relative bg-white border border-line p-14 md:p-24 text-center max-w-lg mx-4 flex flex-col items-center">
+            <div class="absolute top-4 left-4 right-4 bottom-4 border border-line pointer-events-none"></div>
+            <p class="text-sm tracking-[0.3em] text-muted mb-6 font-serif">WINTER TRIP</p>
+            <h1 class="text-5xl md:text-6xl font-serif font-bold text-ink mb-6 tracking-widest leading-tight">宜起<br>出去玩</h1>
+            <p class="text-matcha text-base tracking-widest mb-10 font-serif border-b border-line pb-4 font-bold">12.04 - 12.06</p>
+            <button onclick="enterSite()" class="group relative px-8 py-3 bg-transparent overflow-hidden border border-ink text-ink hover:text-white transition-colors duration-300">
+                <span class="relative z-10 text-base tracking-widest font-bold">展開旅程</span>
+                <div class="absolute inset-0 bg-ink transform scale-x-0 origin-left group-hover:scale-x-100 transition-transform duration-300 ease-out"></div>
+            </button>
+        </div>
+    </div>
+
+    <!-- 2. 主應用程式容器 (SPA架構) -->
+    <div id="app-container">
+        
+        <!-- 全域頂部導航列 (Navbar) -->
+        <nav class="fixed top-0 left-0 right-0 bg-washi/95 backdrop-blur-md z-40 border-b border-line shadow-sm">
+            <div class="max-w-5xl mx-auto px-4 md:px-6 h-16 flex items-center justify-between">
+                <button onclick="switchPage('page-home')" class="font-serif font-bold text-xl tracking-widest text-ink hover:text-matcha transition-colors">
+                    宜起出去玩
+                </button>
+                <div class="flex gap-4 md:gap-8 text-sm md:text-base tracking-widest">
+                    <button onclick="switchPage('page-day1')" class="nav-link py-5" data-target="page-day1">Day 1</button>
+                    <button onclick="switchPage('page-day2')" class="nav-link py-5" data-target="page-day2">Day 2</button>
+                    <button onclick="switchPage('page-day3')" class="nav-link py-5" data-target="page-day3">Day 3</button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- 內容區塊 (預留 Navbar 高度) -->
+        <div class="pt-16 pb-24">
+            
+            <!-- ============================== -->
+            <!-- 視圖 0: 主頁 (Overview)        -->
+            <!-- ============================== -->
+            <div id="page-home" class="page-view page-active">
+                <!-- 明亮主視覺 -->
+                <header class="relative w-full h-[50vh] md:h-[60vh] bg-washi flex flex-col justify-end">
+                    <img src="https://images.unsplash.com/photo-1493246507139-91e8fad9978e?q=80&w=1920&auto=format&fit=crop" alt="Bright Nature" class="absolute inset-0 w-full h-full object-cover opacity-30">
+                    <div class="absolute inset-0 bg-gradient-to-t from-washi via-washi/80 to-transparent"></div>
+                    <div class="relative z-10 p-8 md:p-16 max-w-5xl mx-auto w-full">
+                        <p class="text-matcha font-serif tracking-[0.2em] mb-3 text-base font-bold">OVERVIEW</p>
+                        <h2 class="text-5xl md:text-7xl font-serif font-bold text-ink tracking-widest mb-4">首頁資訊</h2>
+                        <p class="text-ink text-xl font-medium tracking-wider">行前須知與車輛配置</p>
+                    </div>
+                </header>
+
+                <div class="max-w-4xl mx-auto px-6 mt-8">
+                    <!-- 資訊卡片 -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-0 border border-line bg-white shadow-sm mb-12">
+                        <div class="p-8 border-b md:border-b-0 md:border-r border-line">
+                            <span class="text-sm text-muted tracking-widest border border-line px-3 py-1 mb-4 inline-block font-bold">STAY / 住宿</span>
+                            <h4 class="text-2xl font-serif mb-3 text-ink font-bold">簡單就好民宿</h4>
+                            <p class="text-base text-muted font-medium mb-6 tracking-wide">宜蘭縣冬山鄉群英村九分三路38號</p>
+                            <div class="flex flex-col gap-3">
+                                <a href="https://www.google.com/maps/search/?api=1&query=宜蘭縣冬山鄉群英村九分三路38號" target="_blank" class="text-sm border border-line text-ink hover:bg-ink hover:text-white px-4 py-3 transition-colors tracking-wider font-bold text-center"><i class="fa-brands fa-google mr-2"></i>Google 地圖</a>
+                                <a href="http://maps.apple.com/?q=宜蘭縣冬山鄉群英村九分三路38號" target="_blank" class="text-sm border border-line text-ink hover:bg-ink hover:text-white px-4 py-3 transition-colors tracking-wider font-bold text-center"><i class="fa-brands fa-apple mr-2"></i>Apple 地圖</a>
+                            </div>
+                            
+                            <div class="mt-8 pt-6 border-t border-line">
+                                <span class="text-sm text-muted tracking-widest border border-line px-3 py-1 mb-4 inline-block font-bold">NOTICE / 提醒</span>
+                                <ul class="text-base font-medium space-y-3 text-ink tracking-wide">
+                                    <li class="flex items-start"><i class="fa-solid fa-check text-matcha mt-1 mr-2"></i> 建議自行攜帶牙刷、牙膏</li>
+                                    <li class="flex items-start"><i class="fa-solid fa-check text-matcha mt-1 mr-2"></i> 山區易雨，建議攜帶雨具</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="p-8 bg-washi flex flex-col">
+                            <span class="text-sm text-muted tracking-widest border border-line bg-white px-3 py-1 mb-6 inline-block self-start font-bold">VEHICLES / 車輛</span>
+                            <div class="space-y-4 w-full">
+                                <div class="bg-white border border-line p-5">
+                                    <div class="flex justify-between items-center mb-3 border-b border-line pb-3">
+                                        <span class="font-bold text-lg text-ink">司機：黃暐翔</span>
+                                        <span class="text-sm text-muted font-mono bg-washi px-2 py-1 font-bold">BUH-1913</span>
+                                    </div>
+                                    <p class="text-base text-ink font-medium leading-relaxed">乘客：黃品翰、小陳、黃姿螢、黃品慧</p>
+                                </div>
+                                <div class="bg-white border border-line p-5">
+                                    <div class="flex justify-between items-center mb-3 border-b border-line pb-3">
+                                        <span class="font-bold text-lg text-ink">司機：黃信迪</span>
+                                        <span class="text-sm text-muted font-mono bg-washi px-2 py-1 font-bold">BSD-6230</span>
+                                    </div>
+                                    <p class="text-base text-ink font-medium leading-relaxed">乘客：阿迪一家</p>
+                                </div>
+                                <div class="bg-white border border-line p-5">
+                                    <div class="flex justify-between items-center mb-3 border-b border-line pb-3">
+                                        <span class="font-bold text-lg text-ink">司機：黃信銘</span>
+                                        <span class="text-sm text-muted font-mono bg-washi px-2 py-1 font-bold text-matcha">6418-UX</span>
+                                    </div>
+                                    <p class="text-base text-muted font-medium leading-relaxed">乘客：無</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 行程入口導航區塊 -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <button onclick="switchPage('page-day1')" class="border border-line bg-white p-8 text-center hover:border-ink hover:shadow-md transition-all group">
+                            <h3 class="text-2xl font-serif font-bold text-ink mb-2">第一日</h3>
+                            <p class="text-matcha tracking-widest font-bold mb-4">12.04</p>
+                            <span class="text-sm text-ink border-b border-ink pb-1 group-hover:px-4 transition-all">進入行程 <i class="fa-solid fa-arrow-right ml-1"></i></span>
+                        </button>
+                        <button onclick="switchPage('page-day2')" class="border border-line bg-white p-8 text-center hover:border-ink hover:shadow-md transition-all group">
+                            <h3 class="text-2xl font-serif font-bold text-ink mb-2">第二日</h3>
+                            <p class="text-wood tracking-widest font-bold mb-4">12.05</p>
+                            <span class="text-sm text-ink border-b border-ink pb-1 group-hover:px-4 transition-all">進入行程 <i class="fa-solid fa-arrow-right ml-1"></i></span>
+                        </button>
+                        <button onclick="switchPage('page-day3')" class="border border-line bg-white p-8 text-center hover:border-ink hover:shadow-md transition-all group">
+                            <h3 class="text-2xl font-serif font-bold text-ink mb-2">第三日</h3>
+                            <p class="text-muted tracking-widest font-bold mb-4">12.06</p>
+                            <span class="text-sm text-ink border-b border-ink pb-1 group-hover:px-4 transition-all">進入行程 <i class="fa-solid fa-arrow-right ml-1"></i></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ============================== -->
+            <!-- 視圖 1: Day 1                -->
+            <!-- ============================== -->
+            <div id="page-day1" class="page-view max-w-4xl mx-auto px-6 mt-8">
+                <div class="mb-12 border-b-2 border-ink pb-6">
+                    <h2 class="text-4xl font-serif font-bold tracking-widest text-ink mb-2">第一日</h2>
+                    <p class="text-xl text-matcha font-serif tracking-widest font-bold">12.04 (五)</p>
+                </div>
+                
+                <div class="timeline-line">
+                    
+                    <div class="relative pl-16 py-6 border-b border-line border-dashed">
+                        <div class="timeline-dot"></div>
+                        <div class="flex flex-col md:flex-row md:items-start gap-4">
+                            <div class="md:w-36 flex-shrink-0">
+                                <span class="text-ink font-serif text-2xl font-bold tracking-wider">11:00</span>
+                                <span class="text-base text-muted block mt-1 font-medium">~ 12:15</span>
+                            </div>
+                            <div class="flex-grow">
+                                <h4 class="text-2xl font-bold tracking-wide mb-3 text-ink">出發與領取詹記</h4>
+                                <p class="text-lg text-ink font-medium leading-relaxed mb-5">11:00 自五股出發，沿途於板橋車站（北二門）、永元路接駁。預計 12:15 前往詹記敦南店領取麻辣與清湯鍋底。</p>
+                                <div class="flex flex-col sm:flex-row gap-3">
+                                    <a href="https://www.google.com/maps/search/?api=1&query=詹記麻辣火鍋敦南店" target="_blank" class="text-sm border border-line px-5 py-3 text-ink bg-white hover:bg-ink hover:text-white transition-colors tracking-wider font-bold text-center"><i class="fa-brands fa-google mr-2"></i>詹記 Google導航</a>
+                                    <a href="http://maps.apple.com/?q=詹記麻辣火鍋敦南店" target="_blank" class="text-sm border border-line px-5 py-3 text-ink bg-white hover:bg-ink hover:text-white transition-colors tracking-wider font-bold text-center"><i class="fa-brands fa-apple mr-2"></i>詹記 Apple導航</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="relative pl-16 py-6 border-b border-line border-dashed">
+                        <div class="timeline-dot"></div>
+                        <div class="flex flex-col md:flex-row md:items-start gap-4">
+                            <div class="md:w-36 flex-shrink-0">
+                                <span class="text-ink font-serif text-2xl font-bold tracking-wider">13:50</span>
+                                <span class="text-base text-muted block mt-1 font-medium">~ 15:00</span>
+                            </div>
+                            <div class="flex-grow">
+                                <h4 class="text-2xl font-bold tracking-wide mb-3 text-ink">小溪邊咖啡廳</h4>
+                                <p class="text-lg text-ink font-medium leading-relaxed mb-5">三車於頭城會合（阿迪一家 09:10 出發、小銘 12:00 出發），享受午後靜謐的咖啡時光。</p>
+                                <div class="flex flex-col sm:flex-row gap-3">
+                                    <a href="https://www.google.com/maps/search/?api=1&query=宜蘭縣頭城鎮頂埔里頂埔路一段178巷22號" target="_blank" class="text-sm border border-line px-5 py-3 text-ink bg-white hover:bg-ink hover:text-white transition-colors tracking-wider font-bold text-center"><i class="fa-brands fa-google mr-2"></i>咖啡廳 Google</a>
+                                    <a href="http://maps.apple.com/?q=宜蘭縣頭城鎮頂埔里頂埔路一段178巷22號" target="_blank" class="text-sm border border-line px-5 py-3 text-ink bg-white hover:bg-ink hover:text-white transition-colors tracking-wider font-bold text-center"><i class="fa-brands fa-apple mr-2"></i>咖啡廳 Apple</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="relative pl-16 py-6 border-b border-line border-dashed">
+                        <div class="timeline-dot"></div>
+                        <div class="flex flex-col md:flex-row md:items-start gap-4">
+                            <div class="md:w-36 flex-shrink-0">
+                                <span class="text-ink font-serif text-2xl font-bold tracking-wider">15:30</span>
+                                <span class="text-base text-muted block mt-1 font-medium">~ 16:20</span>
+                            </div>
+                            <div class="flex-grow">
+                                <h4 class="text-2xl font-bold tracking-wide mb-3 text-ink">溪和水產觀光工廠</h4>
+                                <p class="text-lg text-ink font-medium leading-relaxed mb-5">認識在地水產加工，進行特色體驗活動。16:30 準備出發前往民宿。</p>
+                                <div class="flex flex-col sm:flex-row gap-3">
+                                    <a href="https://www.google.com/maps/search/?api=1&query=宜蘭縣五結鄉成興村利興二路11號" target="_blank" class="text-sm border border-line px-5 py-3 text-ink bg-white hover:bg-ink hover:text-white transition-colors tracking-wider font-bold text-center"><i class="fa-brands fa-google mr-2"></i>觀光工廠 Google</a>
+                                    <a href="http://maps.apple.com/?q=宜蘭縣五結鄉成興村利興二路11號" target="_blank" class="text-sm border border-line px-5 py-3 text-ink bg-white hover:bg-ink hover:text-white transition-colors tracking-wider font-bold text-center"><i class="fa-brands fa-apple mr-2"></i>觀光工廠 Apple</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="relative pl-16 py-6">
+                        <div class="timeline-dot"></div>
+                        <div class="flex flex-col md:flex-row md:items-start gap-4">
+                            <div class="md:w-36 flex-shrink-0">
+                                <span class="text-ink font-serif text-2xl font-bold tracking-wider">16:50</span>
+                                <span class="text-base text-muted block mt-1 font-medium">~ 22:00</span>
+                            </div>
+                            <div class="flex-grow">
+                                <h4 class="text-2xl font-bold tracking-wide mb-3 text-ink">民宿入宿與晚餐</h4>
+                                <p class="text-lg text-ink font-medium leading-relaxed mb-5">16:50 抵達「簡單就好民宿」入住。17:15 前往羅莊店喜互惠採買，晚間享用詹記鍋底與娛樂活動。</p>
+                                
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                                    <div class="border border-line bg-white p-4">
+                                        <p class="font-bold text-ink mb-2">📍簡單就好民宿</p>
+                                        <div class="flex flex-col gap-2">
+                                            <a href="https://www.google.com/maps/search/?api=1&query=宜蘭縣冬山鄉群英村九分三路38號" target="_blank" class="text-xs border border-line py-2 text-center hover:bg-ink hover:text-white transition font-bold">Google Maps</a>
+                                            <a href="http://maps.apple.com/?q=宜蘭縣冬山鄉群英村九分三路38號" target="_blank" class="text-xs border border-line py-2 text-center hover:bg-ink hover:text-white transition font-bold">Apple Maps</a>
+                                        </div>
+                                    </div>
+                                    <div class="border border-line bg-white p-4">
+                                        <p class="font-bold text-ink mb-2">🛒喜互惠生鮮超市(羅莊店)</p>
+                                        <div class="flex flex-col gap-2">
+                                            <a href="https://www.google.com/maps/search/?api=1&query=宜蘭縣羅東鎮羅莊里天祥路123號" target="_blank" class="text-xs border border-line py-2 text-center hover:bg-ink hover:text-white transition font-bold">Google Maps</a>
+                                            <a href="http://maps.apple.com/?q=宜蘭縣羅東鎮羅莊里天祥路123號" target="_blank" class="text-xs border border-line py-2 text-center hover:bg-ink hover:text-white transition font-bold">Apple Maps</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 頁尾導航 -->
+                <div class="mt-12 flex justify-between border-t border-line pt-6">
+                    <button onclick="switchPage('page-home')" class="text-muted hover:text-ink font-bold transition"><i class="fa-solid fa-house mr-2"></i>回首頁</button>
+                    <button onclick="switchPage('page-day2')" class="bg-ink text-white px-6 py-3 font-bold hover:bg-black transition tracking-wider">前往第二日 <i class="fa-solid fa-arrow-right ml-2"></i></button>
+                </div>
+            </div>
+
+            <!-- ============================== -->
+            <!-- 視圖 2: Day 2                -->
+            <!-- ============================== -->
+            <div id="page-day2" class="page-view max-w-4xl mx-auto px-6 mt-8">
+                <div class="mb-12 border-b-2 border-ink pb-6">
+                    <h2 class="text-4xl font-serif font-bold tracking-widest text-ink mb-2">第二日</h2>
+                    <p class="text-xl text-wood font-serif tracking-widest font-bold">12.05 (六)</p>
+                </div>
+                
+                <div class="timeline-line">
+                    <div class="relative pl-16 py-6 border-b border-line border-dashed">
+                        <div class="timeline-dot bg-wood"></div>
+                        <div class="flex flex-col md:flex-row md:items-start gap-4">
+                            <div class="md:w-36 flex-shrink-0">
+                                <span class="text-ink font-serif text-2xl font-bold tracking-wider">09:50</span>
+                                <span class="text-base text-muted block mt-1 font-medium">~ 11:00</span>
+                            </div>
+                            <div class="flex-grow">
+                                <h4 class="text-2xl font-bold tracking-wide mb-3 text-ink">斑比山丘</h4>
+                                <p class="text-lg text-ink font-medium leading-relaxed mb-5">09:30 準時出發，享受與梅花鹿的近距離接觸，悠閒的晨間散策。</p>
+                                <div class="flex flex-col sm:flex-row gap-3">
+                                    <a href="https://www.google.com/maps/search/?api=1&query=宜蘭縣冬山鄉下湖路285號" target="_blank" class="text-sm border border-line px-5 py-3 text-ink bg-white hover:bg-ink hover:text-white transition-colors tracking-wider font-bold text-center"><i class="fa-brands fa-google mr-2"></i>斑比山丘 Google</a>
+                                    <a href="http://maps.apple.com/?q=宜蘭縣冬山鄉下湖路285號" target="_blank" class="text-sm border border-line px-5 py-3 text-ink bg-white hover:bg-ink hover:text-white transition-colors tracking-wider font-bold text-center"><i class="fa-brands fa-apple mr-2"></i>斑比山丘 Apple</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="relative pl-16 py-6 border-b border-line border-dashed">
+                        <div class="timeline-dot bg-wood"></div>
+                        <div class="flex flex-col md:flex-row md:items-start gap-4">
+                            <div class="md:w-36 flex-shrink-0">
+                                <span class="text-ink font-serif text-2xl font-bold tracking-wider">11:30</span>
+                                <span class="text-base text-muted block mt-1 font-medium">~ 13:00</span>
+                            </div>
+                            <div class="flex-grow">
+                                <h4 class="text-2xl font-bold tracking-wide mb-3 text-ink">午餐：窯烤雞</h4>
+                                <p class="text-lg text-ink font-medium leading-relaxed mb-5">在地知名窯烤雞二擇一，體驗傳統風味。</p>
+                                
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div class="border border-line bg-white p-5">
+                                        <p class="font-bold text-xl mb-4 text-ink">福哥石窯雞</p>
+                                        <div class="flex flex-col gap-2">
+                                            <a href="https://www.google.com/maps/search/?api=1&query=宜蘭縣五結鄉國民中路12-16號" target="_blank" class="text-sm border border-line py-2 text-center hover:bg-ink hover:text-white transition font-bold">Google Maps</a>
+                                            <a href="http://maps.apple.com/?q=宜蘭縣五結鄉國民中路12-16號" target="_blank" class="text-sm border border-line py-2 text-center hover:bg-ink hover:text-white transition font-bold">Apple Maps</a>
+                                        </div>
+                                    </div>
+                                    <div class="border border-line bg-white p-5">
+                                        <p class="font-bold text-xl mb-4 text-ink">百匯窯烤雞</p>
+                                        <div class="flex flex-col gap-2">
+                                            <a href="https://www.google.com/maps/search/?api=1&query=宜蘭縣五結鄉五結路三段171號" target="_blank" class="text-sm border border-line py-2 text-center hover:bg-ink hover:text-white transition font-bold">Google Maps</a>
+                                            <a href="http://maps.apple.com/?q=宜蘭縣五結鄉五結路三段171號" target="_blank" class="text-sm border border-line py-2 text-center hover:bg-ink hover:text-white transition font-bold">Apple Maps</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="relative pl-16 py-6 border-b border-line border-dashed">
+                        <div class="timeline-dot bg-wood"></div>
+                        <div class="flex flex-col md:flex-row md:items-start gap-4">
+                            <div class="md:w-36 flex-shrink-0">
+                                <span class="text-ink font-serif text-2xl font-bold tracking-wider">13:30</span>
+                                <span class="text-base text-muted block mt-1 font-medium">~ 16:30</span>
+                            </div>
+                            <div class="flex-grow">
+                                <h4 class="text-2xl font-bold tracking-wide mb-3 text-ink">傳統藝術中心</h4>
+                                <p class="text-lg text-ink font-medium leading-relaxed mb-5">走訪紅磚建築，感受工藝之美與復古氛圍。</p>
+                                <div class="flex flex-col sm:flex-row gap-3">
+                                    <a href="https://www.google.com/maps/search/?api=1&query=宜蘭縣五結鄉季新村五濱路二段201號" target="_blank" class="text-sm border border-line px-5 py-3 text-ink bg-white hover:bg-ink hover:text-white transition-colors tracking-wider font-bold text-center"><i class="fa-brands fa-google mr-2"></i>傳藝中心 Google</a>
+                                    <a href="http://maps.apple.com/?q=宜蘭縣五結鄉季新村五濱路二段201號" target="_blank" class="text-sm border border-line px-5 py-3 text-ink bg-white hover:bg-ink hover:text-white transition-colors tracking-wider font-bold text-center"><i class="fa-brands fa-apple mr-2"></i>傳藝中心 Apple</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="relative pl-16 py-6">
+                        <div class="timeline-dot bg-wood"></div>
+                        <div class="flex flex-col md:flex-row md:items-start gap-4">
+                            <div class="md:w-36 flex-shrink-0">
+                                <span class="text-ink font-serif text-2xl font-bold tracking-wider">17:00</span>
+                                <span class="text-base text-muted block mt-1 font-medium">~ 22:00</span>
+                            </div>
+                            <div class="flex-grow">
+                                <h4 class="text-2xl font-bold tracking-wide mb-3 text-ink">晚餐與返程</h4>
+                                <p class="text-lg text-ink font-medium leading-relaxed">自由選擇羅東夜市或回到簡單就好民宿自炊。<br><span class="text-base text-wood font-bold mt-2 inline-block">※ 備註：黃品翰將搭乘 17:43 羅東站火車先行離開。</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 頁尾導航 -->
+                <div class="mt-12 flex justify-between border-t border-line pt-6">
+                    <button onclick="switchPage('page-day1')" class="text-muted hover:text-ink font-bold transition"><i class="fa-solid fa-arrow-left mr-2"></i>上一天</button>
+                    <button onclick="switchPage('page-day3')" class="bg-ink text-white px-6 py-3 font-bold hover:bg-black transition tracking-wider">前往第三日 <i class="fa-solid fa-arrow-right ml-2"></i></button>
+                </div>
+            </div>
+
+            <!-- ============================== -->
+            <!-- 視圖 3: Day 3                -->
+            <!-- ============================== -->
+            <div id="page-day3" class="page-view max-w-4xl mx-auto px-6 mt-8">
+                <div class="mb-12 border-b-2 border-ink pb-6">
+                    <h2 class="text-4xl font-serif font-bold tracking-widest text-ink mb-2">第三日</h2>
+                    <p class="text-xl text-muted font-serif tracking-widest font-bold">12.06 (日)</p>
+                </div>
+                
+                <div class="timeline-line">
+                    <div class="relative pl-16 py-6 border-b border-line border-dashed">
+                        <div class="timeline-dot bg-muted"></div>
+                        <div class="flex flex-col md:flex-row md:items-start gap-4">
+                            <div class="md:w-36 flex-shrink-0">
+                                <span class="text-ink font-serif text-2xl font-bold tracking-wider">09:00</span>
+                                <span class="text-base text-muted block mt-1 font-medium">~ 10:00</span>
+                            </div>
+                            <div class="flex-grow">
+                                <h4 class="text-2xl font-bold tracking-wide mb-3 text-ink">早晨時光</h4>
+                                <p class="text-lg text-ink font-medium leading-relaxed">起床享用早餐，整理行李。預計 10:00 退房並前往桃園。</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="relative pl-16 py-6 border-b border-line border-dashed">
+                        <div class="timeline-dot bg-muted"></div>
+                        <div class="flex flex-col md:flex-row md:items-start gap-4">
+                            <div class="md:w-36 flex-shrink-0">
+                                <span class="text-ink font-serif text-2xl font-bold tracking-wider">12:30</span>
+                            </div>
+                            <div class="flex-grow">
+                                <h4 class="text-2xl font-bold tracking-wide mb-3 text-ink">涮金鍋和風涮涮鍋</h4>
+                                <p class="text-lg text-ink font-medium leading-relaxed mb-5">抵達桃園中壢青埔店，以溫暖的鍋物作為旅程的結尾。</p>
+                                
+                                <div class="flex flex-col sm:flex-row gap-3">
+                                    <a href="https://www.google.com/maps/search/?api=1&query=桃園市中壢區芝芭里高鐵南路二段335號" target="_blank" class="text-sm border border-line px-5 py-3 text-ink bg-white hover:bg-ink hover:text-white transition-colors tracking-wider font-bold text-center"><i class="fa-brands fa-google mr-2"></i>涮金鍋 Google</a>
+                                    <a href="http://maps.apple.com/?q=桃園市中壢區芝芭里高鐵南路二段335號" target="_blank" class="text-sm border border-line px-5 py-3 text-ink bg-white hover:bg-ink hover:text-white transition-colors tracking-wider font-bold text-center"><i class="fa-brands fa-apple mr-2"></i>涮金鍋 Apple</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="relative pl-16 py-6 opacity-70">
+                        <div class="timeline-dot bg-line !border-none"></div>
+                        <div class="flex flex-col md:flex-row md:items-start gap-4">
+                            <div class="md:w-36 flex-shrink-0">
+                                <span class="text-muted font-serif text-2xl font-bold tracking-wider">14:30</span>
+                            </div>
+                            <div class="flex-grow">
+                                <h4 class="text-2xl font-bold tracking-wide mb-3 text-muted">歸途</h4>
+                                <p class="text-lg text-muted font-medium leading-relaxed">各自返家，期待下次再敘。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 頁尾導航 -->
+                <div class="mt-12 flex justify-between border-t border-line pt-6">
+                    <button onclick="switchPage('page-day2')" class="text-muted hover:text-ink font-bold transition"><i class="fa-solid fa-arrow-left mr-2"></i>上一天</button>
+                    <button onclick="switchPage('page-home')" class="bg-ink text-white px-6 py-3 font-bold hover:bg-black transition tracking-wider"><i class="fa-solid fa-house mr-2"></i>回到首頁</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // 1. 進入網站邏輯 (從啟動頁進入主應用)
+        function enterSite() {
+            const splash = document.getElementById('splash-screen');
+            const app = document.getElementById('app-container');
+            
+            splash.classList.add('hide-splash');
+            setTimeout(() => {
+                splash.style.display = 'none';
+                app.style.display = 'block';
+                setTimeout(() => app.classList.add('show-app'), 50);
+            }, 800);
+        }
+
+        // 2. SPA 分頁切換邏輯
+        function switchPage(targetPageId) {
+            // 隱藏所有視圖
+            const pages = document.querySelectorAll('.page-view');
+            pages.forEach(page => {
+                page.classList.remove('page-active');
+            });
+            
+            // 顯示目標視圖
+            const targetPage = document.getElementById(targetPageId);
+            if(targetPage) {
+                targetPage.classList.add('page-active');
+            }
+
+            // 更新 Navbar 狀態
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                if(link.getAttribute('data-target') === targetPageId) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+
+            // 切換頁面後自動捲動到最上方
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+    </script>
+</body>
+</html>
